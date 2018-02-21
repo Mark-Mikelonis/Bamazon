@@ -2,6 +2,7 @@ var inquirer = require("inquirer");
 var mysql = require("mysql");
 var config = require("./config.js");
 var key = config.key;
+var custCost = 0;
 var connection = mysql.createConnection({
     host:"localhost",
     port:3306,
@@ -32,15 +33,15 @@ function displayProducts(){
 }
 
 function buyItem(id, quantity){
-    console.log("in buyItem: ID: " + id + " Quantity: " + quantity);
-    var query = "SELECT stock_quantity FROM products WHERE ?";
+   
+    var query = "SELECT stock_quantity, price FROM products WHERE ?";
     connection.query(query,{item_id:id}, function(err, response){
-        console.log("inStock: "+ response[0].stock_quantity);
         if(err) throw err;
         if(response[0].stock_quantity < quantity){
-            console.log("Not enough in stock");
+            console.log("Not enough in stock!");
             promptUser();
         } else {
+            custCost = parseFloat(response[0].price * quantity).toFixed(2);
             updateStock(id, quantity);
         }
     });
@@ -50,7 +51,8 @@ function updateStock(id, quantity){
     var query = "UPDATE products SET stock_quantity=stock_quantity - ? WHERE ?";
     connection.query(query, [quantity,{item_id:id}], function(err, response){
         if (err) throw err;
-        console.log("Items purchased");
+        console.log("Items purchased!");
+        console.log("Your total cost: $" + custCost);
         connection.end();
     });
 }
@@ -69,7 +71,6 @@ function promptUser(){
         }]).then( function(data){
             var id = parseInt(data.id);
             var quantity = parseInt(data.quantity);
-            console.log("in promptUser promise:");
             if(isNumber(id) && isNumber(quantity)){
                 buyItem(id, quantity);
             }
