@@ -23,7 +23,6 @@ function displayProducts(){
             console.log("==========================================================================================");
             console.log("Item ID: " + response[i].item_id + " | " + 
                         "Product Name: " + response[i].product_name + " | " +
-                        "Department: "  + response[i].department_name + " | " +
                         "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
                         "Available Stock: " + response[i].stock_quantity);
         }
@@ -47,11 +46,63 @@ function viewLowInv(){
 
 }
 function updateInventory(){
-        
+        inquirer.prompt(
+            [{
+                name: "item_id",
+                type: "input",
+                message: "Please enter an Item ID",
+
+            },
+            {
+                name: "quantity",
+                type: "input",
+                message: "Please enter quantity received"
+            }]
+        ).then(function(data){
+            var query = "UPDATE products SET stock_quantity=stock_quantity + ? WHERE ?";
+            connection.query(query, [data.quantity,{item_id:data.item_id}], function(err, response){
+                if(err) throw err;
+                if(response){
+                    console.log("Quantity updated!");
+                }
+            });
+        });
 }
 
-function addProduct(){
 
+function addProduct(){
+    inquirer.prompt(
+        [{
+            name: "product_name",
+            type: "input",
+            message: "Please enter a Product Name",
+
+        },
+        {
+            name: "department_name",
+            type: "input",
+            message: "Please enter Department Name"
+        },
+        {
+            name: "price",
+            type: "input",
+            message: "Please enter Price"
+        },
+        {
+            name: "stock_quantity",
+            type: "input",
+            message: "Please enter Quantity Received"
+        }]
+    ).then(function(data){
+        var query = "INSERT INTO products(product_name, department_name, price, stock_quantity)" +
+                    "VALUES(?,?,?,?)";
+        connection.query(query,[data.product_name, data.department_name, data.price, data.stock_quantity], function(err, response){
+            if (response){
+                console.log(data.product_name + " added!");
+
+            }
+        })            
+    });
 }
 
 function promptUser(){
