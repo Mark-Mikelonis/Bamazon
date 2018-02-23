@@ -14,7 +14,7 @@ connection.connect(function(err){
     if (err) throw err;
     promptUser();
     
-})
+});
 
 function displayProducts(){
     connection.query("SELECT * FROM products", function(err, response){
@@ -26,7 +26,7 @@ function displayProducts(){
                         "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
                         "Available Stock: " + response[i].stock_quantity);
         }
-        
+        console.log("==========================================================================================");
     });
 
 }

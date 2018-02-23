@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 var config = require("./config.js");
+var Table = require("cli-table");
 var key = config.key;
 var custCost = 0;
 var connection = mysql.createConnection({
@@ -14,19 +15,28 @@ var connection = mysql.createConnection({
 connection.connect(function(err){
     if (err) throw err;
     displayProducts();
-})
+});
+
+var table = new Table({
+    head:['Item ID','Product Name','Department','Price','Available Stock'],
+    colWidths: [10,40,20,15,20]
+});
 
 function displayProducts(){
     connection.query("SELECT * FROM products", function(err, response){
         if (err) throw err;
         for(var i=0;i<response.length;i++){
-            console.log("==========================================================================================");
-            console.log("Item ID: " + response[i].item_id + " | " + 
-                        "Product Name: " + response[i].product_name + " | " +
-                        "Department: "  + response[i].department_name + " | " +
-                        "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
-                        "Available Stock: " + response[i].stock_quantity);
+            table.push([response[i].item_id,response[i].product_name,response[i].department_name, 
+            parseFloat(response[i].price).toFixed(2),response[i].stock_quantity]);
+            // console.log("==========================================================================================");
+            // console.log("Item ID: " + response[i].item_id + " | " + 
+            //             "Product Name: " + response[i].product_name + " | " +
+            //             "Department: "  + response[i].department_name + " | " +
+            //             "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
+            //             "Available Stock: " + response[i].stock_quantity);
         }
+        console.log(table.toString());
+        // console.log("==========================================================================================");
         promptUser();
     });
 
@@ -42,11 +52,18 @@ function buyItem(id, quantity){
             promptUser();
         } else {
             custCost = parseFloat(response[0].price * quantity).toFixed(2);
+            updateSales(id, custCost);
             updateStock(id, quantity);
         }
     });
 }
-
+ function updateSales(id, sales){
+    var query = "UPDATE products SET product_sales=product_sales + ? WHERE ?";
+    connection.query(query,[sales,{item_id:id}], function(err, response){
+        if(err) throw err;
+        
+    });
+ }
 function updateStock(id, quantity){
     var query = "UPDATE products SET stock_quantity=stock_quantity - ? WHERE ?";
     connection.query(query, [quantity,{item_id:id}], function(err, response){
