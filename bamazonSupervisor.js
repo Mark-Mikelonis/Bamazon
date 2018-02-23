@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 var config = require("./config.js");
+var Table = require("cli-table");
 var key = config.key;
 var connection = mysql.createConnection({
     host:"localhost",
@@ -16,6 +17,11 @@ connection.connect(function(err){
     
 });
 
+var table = new Table({
+    head:["Department ID","Deparmtent Name","Overhead Costs","Product Sales","Total Profit"],
+    colWidths:[20,20,20,15,15] 
+})
+
 function displayProductSales(){
     var query = "SELECT department_id, departments.department_name, over_head_costs, product_sales," + 
                     "(product_sales - over_head_costs) total_profit " +
@@ -24,14 +30,11 @@ function displayProductSales(){
     connection.query(query, function(err,response){
         if(err) throw err;
         for(var i=0;i<response.length;i++){
-            console.log("===========================================================================================================================");
-            console.log("Department ID: " + response[i].department_id + " | " + 
-                        "Department Name: "  + response[i].department_name + " | " +
-                        "Overhead Costs: $" + parseFloat(response[i].over_head_costs).toFixed(2) +" | " +
-                        "Product Sales: $" + parseFloat(response[i].product_sales).toFixed(2) + " | " +
-                        "Total Profit: $" + parseFloat(response[i].total_profit).toFixed(2));
+            table.push([response[i].department_id,response[i].department_name,parseFloat(response[i].over_head_costs).toFixed(2),
+            parseFloat(response[i].product_sales).toFixed(2),parseFloat(response[i].total_profit).toFixed(2)]);
+            
         }
-        console.log("===========================================================================================================================");
+        console.log(table.toString());
         promptUser();
     });                
 }

@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 var config = require("./config.js");
+var Table = require("cli-table");
 var key = config.key;
 var connection = mysql.createConnection({
     host:"localhost",
@@ -16,17 +17,26 @@ connection.connect(function(err){
     
 });
 
+var table = new Table({
+    head:['Item ID','Product Name','Price','Available Stock'],
+    colWidths: [10,40,15,20]
+});
+
 function displayProducts(){
     connection.query("SELECT * FROM products", function(err, response){
         if (err) throw err;
+        
+        var table = new Table({
+            head:['Item ID','Product Name','Price','Available Stock'],
+            colWidths: [10,40,15,20]
+        });
+        
         for(var i=0;i<response.length;i++){
-            console.log("==========================================================================================");
-            console.log("Item ID: " + response[i].item_id + " | " + 
-                        "Product Name: " + response[i].product_name + " | " +
-                        "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
-                        "Available Stock: " + response[i].stock_quantity);
+            table.push([response[i].item_id,response[i].product_name,parseFloat(response[i].price).toFixed(2),response[i].stock_quantity])
+           
         }
-        console.log("==========================================================================================");
+        console.log(table.toString());
+        promptUser();
     });
 
 }
@@ -36,12 +46,16 @@ function viewLowInv(){
                 " WHERE stock_quantity < 5";
     connection.query(query, function(err, response){
         if(err) throw err;
+        var table = new Table({
+            head:['Item ID','Product Name','Available\nStock'],
+            colWidths: [10,40,15]
+        });
         for(var i=0;i<response.length;i++){
-            console.log("Item ID: " + response[i].item_id + " | " + 
-                    "Product Name: " + response[i].product_name + " | " +
-                    "Available Stock: " + response[i].stock_quantity);
+            table.push([response[i].item_id,response[i].product_name,response[i].stock_quantity]);
+           
         }
-        
+        console.log(table.toString());
+        promptUser();
     });
 
 }
