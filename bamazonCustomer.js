@@ -28,15 +28,9 @@ function displayProducts(){
         for(var i=0;i<response.length;i++){
             table.push([response[i].item_id,response[i].product_name,response[i].department_name, 
             parseFloat(response[i].price).toFixed(2),response[i].stock_quantity]);
-            // console.log("==========================================================================================");
-            // console.log("Item ID: " + response[i].item_id + " | " + 
-            //             "Product Name: " + response[i].product_name + " | " +
-            //             "Department: "  + response[i].department_name + " | " +
-            //             "Price: $" + parseFloat(response[i].price).toFixed(2) +" | " +
-            //             "Available Stock: " + response[i].stock_quantity);
+            
         }
         console.log(table.toString());
-        // console.log("==========================================================================================");
         promptUser();
     });
 

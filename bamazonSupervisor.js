@@ -58,23 +58,17 @@ function addDepartment(){
         connection.query(query,[data.department_name, data.overhead], function(err, response){
             if(err) throw err;
             if (response){
-                setSalesOnAddDept(data.department_name);
                 console.log(data.department_name + " added!");
 
             }
-        })
+        });
+        setTimeout(function(){
         promptUser();            
+            
+        },500);
     });
     
 }
-
-function setSalesOnAddDept(deptName){
-    var query = "UPDATE products SET product_sales=0 WHERE ?";
-    connection.query(query,[{department_name:deptName}], function(err, response){
-        if(err) throw err;
-        
-    });
- }
 
 
 
