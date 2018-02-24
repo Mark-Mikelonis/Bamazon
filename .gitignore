@@ -63,3 +63,4 @@ typings/
 package-lock.json
 # config module
 config.js
+seeds.sql

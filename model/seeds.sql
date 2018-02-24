@@ -31,3 +31,14 @@ INSERT INTO departments(department_name,over_head_costs)
 INSERT INTO departments(department_name,over_head_costs) 
         VALUES("Electronics", 1500);  
         
+
+
+SELECT DISTINCT(d.department_id), d.department_name, sum(d.over_head_costs) AS Overhead, sum(p.product_sales) AS Sales, sum((p.product_sales - d.over_head_costs)) AS total_profit 
+    FROM products AS p INNER JOIN departments AS d ON d.department_name=p.department_name GROUP BY department_name;      
+
+
+
+SELECT o.custid, c.name, MAX(o.payment)
+  FROM orders AS o, customers AS c
+  WHERE o.custid = c.custid
+  GROUP BY o.custid;     
