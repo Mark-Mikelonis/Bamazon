@@ -80,6 +80,10 @@ function updateInventory(){
                     console.log("Quantity updated!");
                 }
             });
+            setTimeout( function(){
+                promptUser();
+            },500);
+            
         });
 }
 
@@ -111,11 +115,15 @@ function addProduct(){
         var query = "INSERT INTO products(product_name, department_name, price, stock_quantity)" +
                     "VALUES(?,?,?,?)";
         connection.query(query,[data.product_name, data.department_name, data.price, data.stock_quantity], function(err, response){
+            if(err) throw err;
             if (response){
                 console.log(data.product_name + " added!");
 
             }
-        })            
+        });
+        setTimeout( function(){
+            promptUser();
+        },500);            
     });
 }
 
@@ -128,7 +136,9 @@ function promptUser(){
         choices:["View Products for Sale", 
                     "View Low Inventory", 
                     "Add to Inventory", 
-                    "Add New Product"]
+                    "Add New Product",
+                    "Exit"
+                ]
         }]).then( function(data){
             console.log(data.options);
             switch(data.options){
@@ -144,6 +154,9 @@ function promptUser(){
                 case "Add New Product": 
                     addProduct();
                     break;
+                case "Exit":
+                    connection.end();
+                    break;    
             }
     
     });

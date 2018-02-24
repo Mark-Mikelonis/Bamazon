@@ -78,7 +78,9 @@ function promptUser(){
         type: "list",
         message: "Please select an option",
         choices:["View Products Sales by Department", 
-                    "Create New Department"]
+                    "Create New Department",
+                    "Exit"
+                ]
         }]).then( function(data){
             console.log(data.options);
             switch(data.options){
@@ -88,6 +90,9 @@ function promptUser(){
                 case "Create New Department":
                     addDepartment();
                     break;
+                case "Exit":
+                    connection.end();
+                    break;    
                 
                   
             }
