@@ -29,7 +29,6 @@ Bamazon requires the following to operate:
 
 To start the user part of the application navigate to the Bamazon directory in the terminal and type 
 > node bamazonCustomer.js
-and hit enter
 
 ![Customer](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/customer.gif)
 
@@ -37,7 +36,6 @@ and hit enter
 
 To start the manager part of the application navigate to the Bamazon directory in the terminal and type 
 > node bamazonManager.js
-and hit enter
 
 
 ![Manager](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/manager.gif)
@@ -46,7 +44,6 @@ and hit enter
 
 To start the supervisor part of the application navigate to the Bamazon directory in the terminal and type 
 > node bamazonsupervisor.js
-and hit enter
 
 
 ![Supervisor](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/supervisor.gif)
