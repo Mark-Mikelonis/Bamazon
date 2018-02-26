@@ -28,14 +28,16 @@ Bamazon requires the following to operate:
 ### User Role
 
 To start the user part of the application navigate to the Bamazon directory in the terminal and type 
->$'node bamazonCustomer.js'
+> node bamazonCustomer.js
+and hit enter
 
 ![Customer](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/customer.gif)
 
 ### Manager Role
 
 To start the manager part of the application navigate to the Bamazon directory in the terminal and type 
->$'node bamazonManager.js'
+> node bamazonManager.js
+and hit enter
 
 
 ![Manager](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/manager.gif)
@@ -43,7 +45,8 @@ To start the manager part of the application navigate to the Bamazon directory i
 ### Supervisor Role
 
 To start the supervisor part of the application navigate to the Bamazon directory in the terminal and type 
->$'node bamazonsupervisor.js'
+> node bamazonsupervisor.js
+and hit enter
 
 
 ![Supervisor](https://github.com/Mark-Mikelonis/Bamazon/tree/master/images/supervisor.gif)
