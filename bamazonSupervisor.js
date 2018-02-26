@@ -23,9 +23,8 @@ var table = new Table({
 })
 
 function displayProductSales(){
-    var query = "SELECT d.department_id, d.department_name, sum(d.over_head_costs) AS over_head_costs, sum(p.product_sales) AS product_sales, "+ 
-                "sum((p.product_sales - d.over_head_costs)) AS total_profit FROM products AS p INNER JOIN departments AS d " +
-                "ON d.department_name=p.department_name GROUP BY department_id;";
+    var query = "SELECT d.department_id, d.department_name, d.over_head_costs AS over_head_costs, sum(p.product_sales) AS product_sales," + 
+    " (sum(p.product_sales) - d.over_head_costs) total_profit FROM products AS p INNER JOIN departments AS d ON d.department_name=p.department_name GROUP BY department_id";
     connection.query(query, function(err,response){
         if(err) throw err;
         for(var i=0;i<response.length;i++){
@@ -99,3 +98,10 @@ function promptUser(){
     
     });
 }    
+
+
+
+
+
+
+
